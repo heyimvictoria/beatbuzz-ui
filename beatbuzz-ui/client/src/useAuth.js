@@ -2,30 +2,44 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function useAuth(code) {
-  const [accsessToken, setAccsessToken] = useState()
-  const [refreshToken, setRefreshToken] = useState()
+  const [accessToken, setAccessToken] = useState();
+  const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
 
   useEffect(() => {
     axios
-      .post("https://localhost:3001/refresh", {
-        refreshToken,
+      .post("http://localhost:3000/login", {
+        code,
       })
       .then((res) => {
-        // setAccsessToken(res.data.accsessToken)
-        // setRefreshToken(res.data.refreshToken)
-        // setExpiresIn(res.data.expiresIn)
-        // window.history.replaceState({}, null, "/")
+        setAccessToken(res.data.accessToken);
+        setRefreshToken(res.data.refreshToken);
+        setExpiresIn(res.data.expiresIn);
+        window.history.pushState({}, null, "/");
       })
-      .catch(() => {
-        window.location = "/"
-      })
+      .catch((e) => {
+        //window.location = "/";
+      });
   }, [code]);
 
   useEffect(() => {
+    if (!accessToken || !expiresIn) return;
+    const interval = setInterval(() => {
+      axios
+        .post("https://localhost:3000/refresh", {
+          refreshToken,
+        })
+        .then((res) => {
+          setAccessToken(res.data.accessToken);
+          setExpiresIn(res.data.expiresIn);
+        })
+        .catch(() => {
+          window.location = "/";
+        });
+    }, (expiresIn - 60) * 1000);
 
-  }, [refreshToken, expiresIn])
+    return () => clearInterval(interval);
+  }, [refreshToken, expiresIn]);
 
-  return accsessToken
-  };
-
+  return accessToken;
+}
