@@ -104,7 +104,7 @@ import CreatePostForm from './CreatePostForm'; // Import the CreatePostForm comp
 
 function App() {
   // Assuming you have the userId available in your application state
-  const userId = 302; // Replace '123' with the actual userId
+  const userId = 1; // Replace '123' with the actual userId
 
   return (
     <div className="App">
