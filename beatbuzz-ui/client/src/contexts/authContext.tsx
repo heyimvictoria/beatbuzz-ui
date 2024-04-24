@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import authService from "../services/authService"
 
 
@@ -16,9 +16,9 @@ import authService from "../services/authService"
 
 
 
-
-
-
+    type Props = {
+    childern:ReactNode
+}
 
 const AuthContextProvider = (props:Props) => {
 
@@ -54,6 +54,21 @@ const signin =async (user:Partial<User>) => {
         localStorage.setItem( "user-token", res.data.token)
         setUser(res.data)
     }  catch (error) {
-        
+        console.error("Sign in error -->", error)
     }
 }
+
+const signout = () => {
+    localStorage.removeItem("user-token")
+    setUser(undefined)
+}
+return (
+    <authContext.Provider value={{user, signin, signout, signup}}>
+    {props.childern}
+    </authContext.Provider>
+    )
+}
+
+export default AuthContextProvider;
+
+export const useAuth = () => useContext(authContext)
