@@ -1,10 +1,8 @@
-// StarRating.js
-
 import React, { useState } from 'react';
-import './StarRating.css'; // Import CSS file for styling stars
+import './StarRatingEdit.css'; // Import the CSS file
 
-const StarRating = ({ onChange }) => {
-  const [rating, setRating] = useState(0);
+const StarRatingEdit = ({ initialValue, onChange }) => {
+  const [rating, setRating] = useState(initialValue);
 
   const handleClick = (value) => {
     setRating(value);
@@ -12,7 +10,7 @@ const StarRating = ({ onChange }) => {
   };
 
   return (
-    <div className="star-rating">
+    <div className="star-rating-edit"> {/* Apply the class name */}
       {[...Array(5)].map((_, index) => {
         const ratingValue = index + 1;
         return (
@@ -31,5 +29,4 @@ const StarRating = ({ onChange }) => {
   );
 };
 
-export default StarRating;
-
+export default StarRatingEdit;

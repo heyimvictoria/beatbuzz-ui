@@ -74,7 +74,7 @@
 //             <div>
 //                 <h1>Register</h1>
 //                 <div>
-//                     <input type='string'/>
+//                     <input type='email'/>
 //                     <label htmlfor="" >Username</label>
 //                 </div>
 //                 <div>
@@ -97,13 +97,15 @@
 //         </div>
 //     );
 // };
+
+
 import { Link} from "react-router-dom"
 import { useRef, useState, useEffect } from "react";
 import axios from './api/axios';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = '/register';
+const REGISTER_URL = 'http://localhost:8080/api/auth/signup';
 
 const Register = () => {
     const userRef = useRef();
@@ -144,18 +146,18 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if button enabled with JS hack
-        const v1 = USER_REGEX.test(username);
-        const v2 = PWD_REGEX.test(password);
-        if (!v1 || !v2) {
-            setErrMsg("Invalid Entry");
-            return;
-        }
+        // const v1 = USER_REGEX.test(username);
+        // const v2 = PWD_REGEX.test(password);
+        // if (!v1 || !v2) {
+        //     setErrMsg("Invalid Entry");
+        //     return;
+        // }
         try {
             const response = await axios.post(REGISTER_URL,
                 JSON.stringify({ username, password }),
                 {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    headers: { 'Content-Type': 'application/json' }
+                    // withCredentials: true
                 }
             );
             // TODO: remove console.logs before deployment
@@ -184,7 +186,7 @@ const Register = () => {
                 <section>
                     <h1>Success!</h1>
                     <p>
-                        <a href="#">Sign In</a>
+                        <a href="signin">Sign In</a>
                     </p>
                 </section>
             ) : (
@@ -254,7 +256,7 @@ const Register = () => {
                             Must match the first password input field.
                         </p>
 
-                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+                        <button>Sign Up</button>
                     </form>
                     <p>
                         Already registered?<br />
