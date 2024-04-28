@@ -2,11 +2,11 @@ import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider.js";
 
 import axios from './api/axios.js';
-import { Link } from 'react-router-dom';
+import { Link, json } from 'react-router-dom';
 const LOGIN_URL = 'http://localhost:8080/api/auth/signin';
 
 const SignIn = () => {
-    const { setAuth } = useContext(AuthContext);
+    const  setAuth  = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
 
@@ -14,6 +14,10 @@ const SignIn = () => {
     const [password, setpassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+
+    const payload = {
+        username: username, password: password
+    } ;
 
     useEffect(() => {
         userRef.current.focus();
@@ -29,21 +33,24 @@ const SignIn = () => {
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ username, password }),
+                // JSON.stringify({ username, password }),
+                payload, 
                 {
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    // withCredentials: true
                 }
             );
+            localStorage.setItem("user", JSON.stringify(response.data));
             console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
+            const accessToken = response?.data?.accessToken; 
             const roles = response?.data?.roles;
-            setAuth({ username, password, roles, accessToken });
+            // setAuth({ username, password, roles, accessToken });
             setUser('');
             setpassword('');
             setSuccess(true);
         } catch (err) {
+            console.log(err);
             if (!err?.response) {
                 setErrMsg('No Server Response');
             } else if (err.response?.status === 400) {
@@ -64,7 +71,7 @@ const SignIn = () => {
                     <h1>You are logged in!</h1>
                     <br />
                     <p>
-                        <a href="#">Go to Home</a>
+                        <a href="/home">Go to Home</a>
                     </p>
                 </section>
             ) : (
