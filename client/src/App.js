@@ -65,9 +65,6 @@ import EditPostForm from './EditPostForm';
 import AllPostsPage from './AllPosts';
 import './App.css';
 import logo from './logo.jpeg';
-import Register from './Register';
-import SignIn from './SignIn';
-import Logout from './logout';
 
 const App = () => {
   const code = new URLSearchParams(window.location.search).get('code');
@@ -80,10 +77,7 @@ const App = () => {
         <h1 className="title">Beat Buzz</h1>
         <div className="button-container">
           <Routes>
-          <Route path="/" element={<Register/>} />
-          <Route path="/signin" element={<SignIn/>} />
-          <Route path="/logout" element={<Logout/>} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/create-review" element={<CreatePostForm userId={userId} />} />
             <Route path="/search" element={<Search code={code} />} />
             <Route path="/all-posts" element={<AllPostsPage />} />
