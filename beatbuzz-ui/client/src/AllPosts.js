@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AllPosts.css';
 import StarRating from './StarRatingDisplay';
-import { Link } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
+import Profile from './Profile';
 const AllPostsPage = () => {
+  const [state, setState] = useState([]);
   const [posts, setPosts] = useState([]);
   const [darkMode, setDarkMode] = useState(false); // State for dark mode
+  const navigate = useNavigate();
+  // const [User, setUser] = useState([]);
+  
 
   useEffect(() => {
     // Fetch all posts from the backend when the component mounts
+    // axios.get('http://localhost:8080/api/auth/user')
     axios.get('http://localhost:8080/api/posts')
       .then(response => {
         setPosts(response.data);
@@ -50,6 +56,17 @@ const AllPostsPage = () => {
   const toggleDarkMode = () => {
     document.body.classList.toggle('dark-mode');
   };
+
+ 
+  const handleView = (postUsername) => {
+    
+    // axios.get('http://localhost:8080/api/posts/user/' + postId )
+    localStorage.setItem("username", postUsername);
+    navigate("/Profile")
+    // if(handleView.onClick == true) {
+    //   redirect="Profile";
+  }
+  
   
 
   return (
@@ -60,9 +77,11 @@ const AllPostsPage = () => {
           <div className="post-header">
             <p className="album-name">{post.albumName}</p>
             <div className="options">
+              {/* <Link to={`/profile/${user.id}`} ></Link> */}
               <Link to={`/edit-post/${post.id}`} className="edit-button">Edit</Link>
               <button onClick={() => handleDelete(post.id)} className="delete-button">Delete</button>
               <button onClick={() => handleLike(post.id)} className="like-button">❤️ {post.likes}</button> {/* Add Like button */}
+              <button onClick={() => handleView(post.username)}>View profile</button>
             </div>
           </div>
           <p className="post-details"><StarRating rating={post.starRating} /></p>

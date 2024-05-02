@@ -228,7 +228,7 @@
     height: 30px;
   }
  
-
+}
   /* Add this class to change text color in dark mode */
 /* Add this class to change text color in dark mode */
 .dark-mode-text {
@@ -259,3 +259,4 @@
 body.dark-mode {
   background-color: #333; /* Dark background color */
   color: #fff; /* Light text color */
+}

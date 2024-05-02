@@ -7,6 +7,10 @@ import EditPostForm from './EditPostForm';
 import AllPostsPage from './AllPosts';
 import './App.css';
 import logo from './logo.jpeg';
+import Register from './Register';
+import Logout from './logout';
+import SignIn from './SignIn';
+import Profile from './Profile';
 
 const App = () => {
   const code = new URLSearchParams(window.location.search).get('code');
@@ -32,7 +36,13 @@ const App = () => {
         <h1 className={`title ${isDarkMode ? 'dark-mode-text' : ''}`}>Beat Buzz</h1>
         <div className="button-container">
           <Routes>
-            <Route path="/" element={<Home />} />
+          
+            <Route path="/" element={<Register/>} />
+            <Route path="/profile" element={<Profile/>} />
+            <Route path="/signin" element={<SignIn/>} />
+            <Route path="/logout" element={<Logout/>} />
+            <Route path="/logout" element={<Logout/>} />
+            <Route path="/home" element={<Home />} />
             <Route path="/create-review" element={<CreatePostForm userId={userId} />} />
             <Route path="/search" element={<Search code={code} />} />
             <Route path="/all-posts" element={<AllPostsPage />} />
@@ -50,6 +60,7 @@ const Home = () => (
     <button><Link to="/create-review" className="submit-button">Create Review</Link></button>
     <button><Link to="/search" className="submit-button">Search</Link></button>
     <button><Link to="/all-posts" className="submit-button">All Posts</Link></button>
+    <button><Link to="/profile" className="submit-button">Profile</Link></button>
   </div>
 );
 
