@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import StarRating from './StarRatingCreate';
 import './CreatePostForm.css';
 import SpotifyWebApi from "spotify-web-api-node";
 import "./Sort.css"
+import {jwtDecode} from "jwt-decode";
 const spotifyApi = new SpotifyWebApi({
   clientId: "a749ae54533d4373a5cd180d822cf1e6",
 });
+
 
 const CreatePostForm = () => {
   const [formData, setFormData] = useState({
     content: '',
     starRating: 1,
-    albumName: '',
-    userId: 1
+    albumName: '', 
+    userId: " "
   });
+
+  const [userId, setUserId] = useState("")
 
   const [errors, setErrors] = useState({});
 
@@ -40,9 +44,43 @@ const CreatePostForm = () => {
     }
     return errors;
   };
+  
+  // const userToken = localStorage.getItem("user");
+  // const username = jwtDecode(userToken).subject;
+
+  
+
+  useEffect(() => {
+    const grabUser = async() => {
+      const username = localStorage.getItem("username")
+      const token = JSON.parse(localStorage.getItem('user')).accessToken;
+      const AuthString = 'Bearer '.concat(token);
+     const response = await axios.get(
+      "http://localhost:8080/api/posts/user/" +  username,
+      {
+        headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: AuthString,
+        }
+    })
+        console.log(response.data);
+        setUserId(response.data.id);
+  }
+    grabUser();
+  }, []);
+
+  // const userProfile = ();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  const payload = {content: formData.content,
+  starRating: formData.starRating,
+  albumName: formData.albumName, 
+  userId: userId
+}
+
+    setFormData({ ...formData, userId: userId });
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -53,14 +91,14 @@ const CreatePostForm = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:8080/api/posts', formData);
+      await axios.post('http://localhost:8080/api/posts', payload);
       //sends data to backend
       alert('Post created successfully');
-      setFormData({
-        content: '',
-        starRating: 1,
-        albumName: ''
-      });
+      // setFormData({
+      //   content: '',
+      //   starRating: 1,
+      //   albumName: ''
+      // });
       setErrors({});
     } catch (error) {
       alert('Error creating post');
@@ -69,6 +107,7 @@ const CreatePostForm = () => {
   };
   
   return (
+    <><p>{userId !== ""? <p>{userId}</p>: <></> }</p>
     <form className="create-post-form" onSubmit={handleSubmit}>
       {errors.albumName && <span className="error-message">{errors.albumName}</span>}
       <input className="input-field" type="text" name="albumName" placeholder="Song Name" value={formData.albumName} onChange={handleChange} />
@@ -78,6 +117,7 @@ const CreatePostForm = () => {
       {errors.content && <span className="error-message">{errors.content}</span>}
       <button className="submit-button" type="submit">Submit</button>
     </form>
+    </>
   );
 };
 

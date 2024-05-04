@@ -42,7 +42,7 @@ const AllPostsPage = () => {
   const handleDelete = (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       // If user confirms, delete the post
-      axios.delete(`http://localhost:8080/api/posts/${postId}`)
+      axios.delete(`http://localhost:8080/api/posts/post/${postId}`)
         .then(() => {
           // Remove the deleted post from the state
           setPosts(posts.filter(post => post.id !== postId));
