@@ -36,7 +36,6 @@ const App = () => {
         <h1 className={`title ${isDarkMode ? 'dark-mode-text' : ''}`}>Beat Buzz</h1>
         <div className="button-container">
           <Routes>
-          
             <Route path="/" element={<Register/>} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/signin" element={<SignIn/>} />
