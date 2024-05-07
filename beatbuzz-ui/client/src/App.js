@@ -59,9 +59,17 @@ const Home = () => (
     <button><Link to="/create-review" className="submit-button">Create Review</Link></button>
     <button><Link to="/search" className="submit-button">Search</Link></button>
     <button><Link to="/all-posts" className="submit-button">All Posts</Link></button>
-    <button><Link to="/profile" className="submit-button">Profile</Link></button>
+    <button onClick={localStorage.setItem("postUser", localStorage.getItem("username"))}><Link to="/profile" className="submit-button">Profile</Link></button>
   </div>
 );
+// const Home = () => (
+//   <div className='home'>
+//     <button><Link to="/create-review" className="submit-button">Create Review</Link></button>
+//     <button><Link to="/search" className="submit-button">Search</Link></button>
+//     <button><Link to="/all-posts" className="submit-button">All Posts</Link></button>
+//     <button><Link to="/profile" className="submit-button">Profile</Link></button>
+//   </div>
+// );
 
 const Search = ({ code }) => (
   <div>

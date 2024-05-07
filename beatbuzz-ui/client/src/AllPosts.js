@@ -61,8 +61,8 @@ const AllPostsPage = () => {
   const handleView = (postUsername) => {
     
     // axios.get('http://localhost:8080/api/posts/user/' + postId )
-    localStorage.setItem("username", postUsername);
     navigate("/Profile")
+    localStorage.setItem("postUser", postUsername);
     // if(handleView.onClick == true) {
     //   redirect="Profile";
   }
